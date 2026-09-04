@@ -1,0 +1,933 @@
+{
+  "version": 1,
+  "system": {
+    "orgName": "Example Broadcast Organization",
+    "appName": "Signal Logger",
+    "adminName": "Administrator"
+  },
+  "gps": {
+    "required": true,
+    "highAccuracy": true,
+    "timeout": 10000,
+    "maximumAge": 0,
+    "fallbackLat": null,
+    "fallbackLng": null,
+    "timeoutSeconds": 10,
+    "accuracyThreshold": 50,
+    "captureIntervalSeconds": 0,
+    "locationFormat": "decimal",
+    "showCoordinates": true,
+    "showMapsLink": true
+  },
+  "stations": [
+    {
+      "id": "ST-001",
+      "name": "Example Broadcast Station",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "rfPower": 1000,
+      "rfPowerUnit": "W",
+      "towerHeightFt": 150,
+      "antennaGainDb": 6,
+      "frequencyMHz": 100.1,
+      "idealCarSensitivityDbm": -100,
+      "enabled": true,
+      "order": 1
+    }
+  ],
+  "channels": [
+    "Example FM 100.1"
+  ],
+  "users": [],
+  "ui": {
+    "schemaVersion": 8,
+    "brand": {
+      "name": "Example Broadcast Organization",
+      "company": "EXAMPLE BROADCAST ORGANIZATION",
+      "shortName": "EBO",
+      "logoText": "EBO",
+      "tagline": "EXAMPLE BROADCAST ORGANIZATION",
+      "appName": "Signal Logger",
+      "version": "v6.5.1",
+      "operator": "Administrator",
+      "role": "Administrator",
+      "operatorUserId": ""
+    },
+    "theme": {
+      "primary": "#1464ED",
+      "accent": "#3B82F6",
+      "success": "#07894C",
+      "warning": "#B96100",
+      "danger": "#C92F35",
+      "sidebar": "#032552",
+      "darkMode": false
+    },
+    "features": {
+      "gpsOverview": true,
+      "signalQuality": true,
+      "signalStability": true,
+      "serviceCondition": true,
+      "technicalReadings": true,
+      "priority": true,
+      "assignment": true,
+      "recentHistory": true,
+      "fieldDashboard": true,
+      "liveMap": true,
+      "syncStatus": true,
+      "reports": true,
+      "offlineData": true,
+      "settings": true,
+      "help": true,
+      "about": true,
+      "calendar": true
+    },
+    "labels": {
+      "gpsOverview": "GPS Overview",
+      "signalQuality": "Signal Quality",
+      "signalStability": "Signal Stability",
+      "serviceCondition": "Service Condition",
+      "technicalReadings": "Optional Technical Readings",
+      "priority": "Incident Priority",
+      "assignment": "Engineer / Operator",
+      "recentHistory": "Recent Incident History",
+      "logButton": "LOG INCIDENT & CAPTURE GPS"
+    },
+    "components": [
+      {
+        "id": "gpsOverview",
+        "title": "GPS Overview",
+        "enabled": true,
+        "order": 1
+      },
+      {
+        "id": "signalQuality",
+        "title": "Signal Quality",
+        "enabled": true,
+        "order": 2
+      },
+      {
+        "id": "signalStability",
+        "title": "Signal Stability",
+        "enabled": true,
+        "order": 3
+      },
+      {
+        "id": "serviceCondition",
+        "title": "Service Condition",
+        "enabled": true,
+        "order": 4
+      },
+      {
+        "id": "technicalReadings",
+        "title": "Optional Technical Readings",
+        "enabled": true,
+        "order": 5
+      },
+      {
+        "id": "priority",
+        "title": "Incident Priority",
+        "enabled": true,
+        "order": 6
+      },
+      {
+        "id": "assignment",
+        "title": "Incident Assignment",
+        "enabled": true,
+        "order": 7
+      },
+      {
+        "id": "recentHistory",
+        "title": "Recent Incident History",
+        "enabled": true,
+        "order": 8
+      }
+    ],
+    "menu": [
+      {
+        "id": "new",
+        "label": "New Incident",
+        "icon": "fa-solid fa-house",
+        "enabled": true,
+        "order": 1
+      },
+      {
+        "id": "history",
+        "label": "Incident History",
+        "icon": "fa-solid fa-clock-rotate-left",
+        "enabled": true,
+        "order": 2
+      },
+      {
+        "id": "map",
+        "label": "Live Map",
+        "icon": "fa-solid fa-map-location-dot",
+        "enabled": true,
+        "order": 3
+      },
+      {
+        "id": "sync",
+        "label": "Sync Status",
+        "icon": "fa-solid fa-rotate",
+        "enabled": true,
+        "order": 4
+      },
+      {
+        "id": "reports",
+        "label": "Reports",
+        "icon": "fa-solid fa-file-export",
+        "enabled": true,
+        "order": 5
+      },
+      {
+        "id": "offline",
+        "label": "Offline Data",
+        "icon": "fa-solid fa-layer-group",
+        "enabled": true,
+        "order": 6
+      },
+      {
+        "id": "settings",
+        "label": "Settings",
+        "icon": "fa-solid fa-gear",
+        "enabled": true,
+        "order": 7
+      },
+      {
+        "id": "help",
+        "label": "Help & Support",
+        "icon": "fa-solid fa-circle-question",
+        "enabled": true,
+        "order": 8
+      },
+      {
+        "id": "about",
+        "label": "About",
+        "icon": "fa-solid fa-circle-info",
+        "enabled": true,
+        "order": 9
+      }
+    ],
+    "stations": [
+      {
+        "id": "ST-001",
+        "name": "Example Broadcast Station",
+        "latitude": 0.0,
+        "longitude": 0.0,
+        "rfPower": 1000,
+        "rfPowerUnit": "W",
+        "towerHeightFt": 150,
+        "antennaGainDb": 6,
+        "frequencyMHz": 100.1,
+        "idealCarSensitivityDbm": -100,
+        "enabled": true,
+        "order": 1
+      }
+    ],
+    "channels": [
+      "Example FM 100.1"
+    ],
+    "engineers": [],
+    "statuses": [
+      "Open",
+      "Investigating",
+      "Resolved",
+      "Closed"
+    ],
+    "priorities": [
+      "Auto",
+      "Major",
+      "Minor",
+      "Critical"
+    ],
+    "qualityOptions": [
+      "Excellent",
+      "Good",
+      "Fair",
+      "Poor",
+      "No Signal"
+    ],
+    "stabilityOptions": [
+      "Stable",
+      "Fluctuating",
+      "Intermittent",
+      "Interference",
+      "Unstable"
+    ],
+    "serviceOptions": [
+      "Normal",
+      "Audio Dropout",
+      "Distortion",
+      "Weak Reception",
+      "No Service / No Signal"
+    ],
+    "customFields": [],
+    "gps": {
+      "required": true,
+      "highAccuracy": true,
+      "timeout": 10000,
+      "maximumAge": 0,
+      "fallbackLat": null,
+      "fallbackLng": null
+    },
+    "settings": {
+      "calendarWeekStart": 0,
+      "autoSync": true,
+      "showBottomNav": true
+    },
+    "permissions": {
+      "Administrator": {
+        "dashboard": true,
+        "manageForm": true,
+        "manageIncidents": true,
+        "manageUsers": true,
+        "export": true,
+        "settings": true
+      },
+      "Supervisor": {
+        "dashboard": true,
+        "manageForm": false,
+        "manageIncidents": true,
+        "manageUsers": false,
+        "export": true,
+        "settings": false
+      },
+      "Engineer": {
+        "dashboard": true,
+        "manageForm": false,
+        "manageIncidents": true,
+        "manageUsers": false,
+        "export": true,
+        "settings": false
+      },
+      "Viewer": {
+        "dashboard": true,
+        "manageForm": false,
+        "manageIncidents": false,
+        "manageUsers": false,
+        "export": true,
+        "settings": false
+      }
+    },
+    "publicApp": {
+      "theme": {
+        "primary": "#1464ED",
+        "accent": "#3B82F6",
+        "page": "#F3F7FB",
+        "surface": "#FFFFFF",
+        "ink": "#071537"
+      },
+      "buttons": {
+        "size": "large",
+        "style": "rounded",
+        "useIcons": true,
+        "mobileTwoColumns": true
+      },
+      "fields": {
+        "name": {
+          "visible": true,
+          "required": false
+        },
+        "station": {
+          "visible": true,
+          "required": true
+        },
+        "channel": {
+          "visible": true,
+          "required": false
+        },
+        "quality": {
+          "visible": true,
+          "required": true
+        },
+        "stability": {
+          "visible": true,
+          "required": true
+        },
+        "service": {
+          "visible": true,
+          "required": true
+        },
+        "comments": {
+          "visible": true,
+          "required": false
+        }
+      },
+      "content": {
+        "headerMessage": "Help Improve Broadcast Quality in Your Area",
+        "supportingMessage": "Your signal reports help broadcast providers deliver better service for everyone.",
+        "footerMessage": "Thank you for being a Broadcast Quality Volunteer!",
+        "privacyNote": "Your report is securely submitted and used only to improve service.",
+        "submitButton": "Submit Signal Report",
+        "submitSupportingText": "Thank you for helping improve broadcast quality!",
+        "introEasyTitle": "Easy to Use",
+        "introEasyText": "Log signal quality in just a few taps.",
+        "introImpactTitle": "Make an Impact",
+        "introImpactText": "Every report helps improve broadcast reliability.",
+        "introPrivacyTitle": "Your Data Matters",
+        "introPrivacyText": "All reports are used to improve service quality."
+      },
+      "welcome": {
+        "enabled": true,
+        "autoShow": "session",
+        "ctaLabel": "Start Reporting",
+        "features": [
+          {
+            "icon": "location",
+            "title": "Easy to Use",
+            "text": "Log signal quality in just a few taps."
+          },
+          {
+            "icon": "impact",
+            "title": "Make an Impact",
+            "text": "Every report helps improve broadcast reliability."
+          },
+          {
+            "icon": "privacy",
+            "title": "Your Data Matters",
+            "text": "All reports are used to improve service quality."
+          }
+        ],
+        "steps": [
+          "Add your name and select a station",
+          "Rate the signal",
+          "Add comments if needed",
+          "Submit your report"
+        ]
+      },
+      "contextualPalette": {
+        "green": "#15803D",
+        "emerald": "#0F766E",
+        "blue": "#2563EB",
+        "amber": "#B45309",
+        "orange": "#C2410C",
+        "purple": "#7C3AED",
+        "red": "#B91C1C"
+      },
+      "contextualTextPalette": {
+        "green": "#FFFFFF",
+        "emerald": "#FFFFFF",
+        "blue": "#FFFFFF",
+        "amber": "#FFFFFF",
+        "orange": "#FFFFFF",
+        "purple": "#FFFFFF",
+        "red": "#FFFFFF"
+      },
+      "summaryColors": {
+        "lightBackground": "#EFF6FF",
+        "lightText": "#1E3A5F",
+        "lightBorder": "#93C5FD",
+        "darkBackground": "#132E4A",
+        "darkText": "#F8FAFC",
+        "darkBorder": "#60A5FA"
+      },
+      "menu": [
+        {
+          "id": "report",
+          "label": "Report",
+          "enabled": true,
+          "order": 1
+        },
+        {
+          "id": "about",
+          "label": "About",
+          "enabled": true,
+          "order": 2
+        },
+        {
+          "id": "help",
+          "label": "Help",
+          "enabled": true,
+          "order": 3
+        }
+      ],
+      "workflow": {
+        "resetSeconds": 5
+      }
+    },
+    "choicePresentation": {
+      "public": {
+        "inactiveTintPercent": 0,
+        "hoverTintPercent": 0,
+        "showCheckmark": true,
+        "showChoiceIcons": true,
+        "sectionIcons": {
+          "quality": "signal-bars",
+          "stability": "waveform",
+          "service": "gears",
+          "technicalReadings": "sliders"
+        }
+      },
+      "field": {
+        "inactiveTintPercent": 0,
+        "hoverTintPercent": 0,
+        "showCheckmark": true,
+        "showChoiceIcons": false,
+        "sectionIcons": {
+          "quality": "signal-bars",
+          "stability": "waveform",
+          "service": "gears",
+          "technicalReadings": "sliders"
+        }
+      }
+    },
+    "designSystem": {
+      "base": {
+        "primary": "#1464ED",
+        "accent": "#3B82F6",
+        "sidebar": "#032552",
+        "page": "#F3F7FB",
+        "surface": "#FFFFFF",
+        "ink": "#071537",
+        "muted": "#5B6980",
+        "success": "#07894C",
+        "warning": "#B96100",
+        "danger": "#C92F35",
+        "gradient": true,
+        "fontScale": 1,
+        "radius": 12,
+        "shadow": "elevated",
+        "tableDensity": "comfortable",
+        "glass": {
+          "enabled": true,
+          "blur": 12,
+          "opacity": 0.9
+        },
+        "darkModeDefault": false,
+        "tableColors": {
+          "odd": "#FFFFFF",
+          "even": "#ECEFF3",
+          "hover": "#DFEAFA",
+          "darkOdd": "#0D2137",
+          "darkEven": "#172D45",
+          "darkHover": "#1D3A59"
+        }
+      },
+      "apps": {
+        "public": {
+          "primary": "#1464ED",
+          "accent": "#3B82F6",
+          "sidebar": "#032552",
+          "page": "#F3F7FB",
+          "surface": "#FFFFFF",
+          "ink": "#071537"
+        },
+        "field": {
+          "primary": "#1464ED",
+          "accent": "#3B82F6",
+          "sidebar": "#032552",
+          "page": "#F3F7FB",
+          "surface": "#FFFFFF",
+          "ink": "#071537"
+        },
+        "admin": {
+          "primary": "#1464ED",
+          "accent": "#3B82F6",
+          "sidebar": "#032552",
+          "page": "#F3F7FB",
+          "surface": "#FFFFFF",
+          "ink": "#071537",
+          "muted": "#5B6980",
+          "success": "#07894C",
+          "warning": "#B96100",
+          "danger": "#C92F35"
+        }
+      }
+    },
+    "dashboards": {
+      "admin": [
+        {
+          "id": "kpis",
+          "title": "Operational Overview",
+          "visible": true,
+          "order": 1,
+          "size": "full"
+        },
+        {
+          "id": "charts",
+          "title": "Analysis",
+          "visible": true,
+          "order": 2,
+          "size": "full"
+        },
+        {
+          "id": "operations",
+          "title": "Operations",
+          "visible": true,
+          "order": 3,
+          "size": "full"
+        },
+        {
+          "id": "metrics",
+          "title": "System Metrics",
+          "visible": true,
+          "order": 4,
+          "size": "full"
+        }
+      ],
+      "field": [
+        {
+          "id": "kpis",
+          "title": "Operational Overview",
+          "visible": true,
+          "order": 1,
+          "size": "full"
+        },
+        {
+          "id": "charts",
+          "title": "Analysis",
+          "visible": true,
+          "order": 2,
+          "size": "full"
+        },
+        {
+          "id": "operations",
+          "title": "Recent Combined Reports",
+          "visible": true,
+          "order": 3,
+          "size": "full"
+        },
+        {
+          "id": "metrics",
+          "title": "System Metrics",
+          "visible": true,
+          "order": 4,
+          "size": "full"
+        }
+      ]
+    },
+    "choiceSets": {
+      "public": {
+        "quality": [
+          {
+            "id": "public-quality-excellent",
+            "label": "Excellent",
+            "color": "#15803D",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 1,
+            "score": 5
+          },
+          {
+            "id": "public-quality-good",
+            "label": "Good",
+            "color": "#22C55E",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 2,
+            "score": 4
+          },
+          {
+            "id": "public-quality-fair",
+            "label": "Fair",
+            "color": "#F59E0B",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 3,
+            "score": 3
+          },
+          {
+            "id": "public-quality-poor",
+            "label": "Poor",
+            "color": "#EA580C",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 4,
+            "score": 2
+          },
+          {
+            "id": "public-quality-no-signal",
+            "label": "No Signal",
+            "color": "#DC2626",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 5,
+            "score": 0
+          }
+        ],
+        "stability": [
+          {
+            "id": "public-stability-stable",
+            "label": "Stable",
+            "color": "#16A34A",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 1,
+            "score": 4
+          },
+          {
+            "id": "public-stability-fluctuating",
+            "label": "Fluctuating",
+            "color": "#F59E0B",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 2,
+            "score": 3
+          },
+          {
+            "id": "public-stability-intermittent",
+            "label": "Intermittent",
+            "color": "#F97316",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 3,
+            "score": 2
+          },
+          {
+            "id": "public-stability-interference",
+            "label": "Interference",
+            "color": "#9333EA",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 4,
+            "score": 0
+          },
+          {
+            "id": "public-stability-unstable",
+            "label": "Unstable",
+            "color": "#DC2626",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 5,
+            "score": 1
+          }
+        ],
+        "service": [
+          {
+            "id": "public-service-normal",
+            "label": "Normal",
+            "color": "#16A34A",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 1,
+            "score": 5
+          },
+          {
+            "id": "public-service-audio-dropout",
+            "label": "Audio Dropout",
+            "color": "#C026D3",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 2,
+            "score": 2
+          },
+          {
+            "id": "public-service-distortion",
+            "label": "Distortion",
+            "color": "#F97316",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 3,
+            "score": 3
+          },
+          {
+            "id": "public-service-weak-reception",
+            "label": "Weak Reception",
+            "color": "#EA580C",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 4,
+            "score": 2
+          },
+          {
+            "id": "public-service-no-service-no-signal",
+            "label": "No Service / No Signal",
+            "color": "#DC2626",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 5,
+            "score": 0
+          }
+        ]
+      },
+      "field": {
+        "quality": [
+          {
+            "id": "field-quality-excellent",
+            "label": "Excellent",
+            "color": "#15803D",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 1,
+            "score": 5
+          },
+          {
+            "id": "field-quality-good",
+            "label": "Good",
+            "color": "#0F766E",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 2,
+            "score": 4
+          },
+          {
+            "id": "field-quality-fair",
+            "label": "Fair",
+            "color": "#B45309",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 3,
+            "score": 3
+          },
+          {
+            "id": "field-quality-poor",
+            "label": "Poor",
+            "color": "#C2410C",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 4,
+            "score": 2
+          },
+          {
+            "id": "field-quality-no-signal",
+            "label": "No Signal",
+            "color": "#B91C1C",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 5,
+            "score": 0
+          }
+        ],
+        "stability": [
+          {
+            "id": "field-stability-stable",
+            "label": "Stable",
+            "color": "#2563EB",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 1,
+            "score": 4
+          },
+          {
+            "id": "field-stability-fluctuating",
+            "label": "Fluctuating",
+            "color": "#B45309",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 2,
+            "score": 3
+          },
+          {
+            "id": "field-stability-intermittent",
+            "label": "Intermittent",
+            "color": "#C2410C",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 3,
+            "score": 2
+          },
+          {
+            "id": "field-stability-interference",
+            "label": "Interference",
+            "color": "#B45309",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 4,
+            "score": 2
+          },
+          {
+            "id": "field-stability-unstable",
+            "label": "Unstable",
+            "color": "#B91C1C",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 5,
+            "score": 1
+          }
+        ],
+        "service": [
+          {
+            "id": "field-service-normal",
+            "label": "Normal",
+            "color": "#15803D",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 1,
+            "score": 5
+          },
+          {
+            "id": "field-service-audio-dropout",
+            "label": "Audio Dropout",
+            "color": "#B91C1C",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 2,
+            "score": 2
+          },
+          {
+            "id": "field-service-distortion",
+            "label": "Distortion",
+            "color": "#7C3AED",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 3,
+            "score": 3
+          },
+          {
+            "id": "field-service-weak-reception",
+            "label": "Weak Reception",
+            "color": "#C2410C",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 4,
+            "score": 2
+          },
+          {
+            "id": "field-service-no-service-no-signal",
+            "label": "No Service / No Signal",
+            "color": "#B91C1C",
+            "textColor": "#FFFFFF",
+            "enabled": true,
+            "order": 5,
+            "score": 0
+          }
+        ]
+      }
+    },
+    "users": [
+      {
+        "id": "USR-DEMO-001",
+        "name": "Demo Administrator",
+        "email": "admin@example.invalid",
+        "role": "Administrator",
+        "active": true
+      },
+      {
+        "id": "USR-DEMO-002",
+        "name": "Demo Engineer",
+        "email": "engineer@example.invalid",
+        "role": "Engineer",
+        "active": true
+      }
+    ]
+  },
+  "incident": {
+    "statuses": [
+      "Open",
+      "Investigating",
+      "Resolved",
+      "Closed"
+    ],
+    "quality": [
+      "Excellent",
+      "Good",
+      "Fair",
+      "Poor",
+      "No Signal"
+    ],
+    "stability": [
+      "Stable",
+      "Fluctuating",
+      "Intermittent",
+      "Interference",
+      "Unstable"
+    ],
+    "service": [
+      "Normal",
+      "Audio Dropout",
+      "Distortion",
+      "Weak Reception",
+      "No Service / No Signal"
+    ]
+  },
+  "components": []
+}

@@ -1,0 +1,11 @@
+{
+  "name": "mbi-signal-logger",
+  "version": "6.5.13",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

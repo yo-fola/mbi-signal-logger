@@ -1,0 +1,10 @@
+{
+  "name": "MBI Incident Logger",
+  "short_name": "MBI Logger",
+  "description": "MBI Signal Operations field incident logger",
+  "start_url": "/field/",
+  "scope": "/field/",
+  "display": "standalone",
+  "background_color": "#f4f8fc",
+  "theme_color": "#03265a"
+}
