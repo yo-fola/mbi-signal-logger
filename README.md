@@ -229,7 +229,7 @@ Node.js is intentionally bound to `127.0.0.1`; port 3000 should not be exposed p
 2. Set `index.html` as the default document.
 3. Install URL Rewrite and ARR.
 4. Enable proxy support in ARR.
-5. adapt `deployment/web.config.example` and place the resulting `web.config` in the IIS site root.
+5. Adapt `deployment/web.config.example` and place the resulting `web.config` in the IIS site root.
 6. Confirm that requests matching `/api/*` are rewritten to `http://127.0.0.1:3000/api/*`.
 7. Grant the IIS application-pool identity read access to the frontend files.
 8. Grant write access to runtime JSON files only to the account running the Node.js service.
