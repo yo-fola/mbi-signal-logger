@@ -11,41 +11,40 @@
 ![KML](https://img.shields.io/badge/Google%20Earth-KML-4285F4?logo=googleearthengine&logoColor=white)
 ![HTTPS](https://img.shields.io/badge/HTTPS-TLS-0A7A4B?logo=letsencrypt&logoColor=white)
 
-> A sanitized portfolio edition of the signal-logging platform I designed and developed for broadcast field operations. Real identities, station coordinates, incident data, credentials and private infrastructure details are not included.
+A browser-based platform for collecting, managing and analysing broadcast signal reports from radio listeners, field personnel and administrators.
 
-## Live project
+## Project context
 
-**Field Signal Logger:** [https://feeds.aforevo.com:444/field/](https://feeds.aforevo.com:444/field/)
+Developed during my IT internship at Murphy Ben International (MBI) as an internship/internal experimental project for collecting and analyzing broadcast signal reports. I was responsible for the design and implementation of the application, working under the guidance of a senior member of the IT team.
 
-The live deployment shows the working Field Engineer interface. The public repository uses synthetic configuration and does not expose the private operational data behind the deployed system.
+This repository is a portfolio representation of the project. Sensitive configuration, internal information, production data, credentials, and company-specific deployment details have been excluded.
 
 ## What the project is about
 
-MBI Broadcast Signal Logger is a browser-based platform for recording, managing and analysing broadcast reception incidents.
+MBI Broadcast Signal Logger turns reception observations into structured data that can be reviewed and analysed. It brings three reporting and management workflows into one system:
 
-It brings three workflows into one system:
+| Application | Route | Purpose |
+|---|---|---|
+| Public / Volunteer Logger | `/` | Allows radio listeners and fans to report reception quality from their location |
+| Field Engineer Logger | `/field/` | Captures GPS position, field observations and optional technical readings |
+| Admin Control Center | `/admin/` | Manages reports, stations, channels, maps, analytics, configuration and exports |
 
-| Application | Purpose |
-|---|---|
-| Public / Volunteer Logger | Makes it easy for members of the public to report reception problems |
-| Field Engineer Logger | Captures GPS position, observations and optional technical readings during field work |
-| Admin Control Center | Manages incidents, stations, channels, configuration, maps, reports, users and exports |
+The Public page is served at the root route (`/`) in the current implementation; it is the project's Public interface rather than a separate `/public/` route.
 
-The backend validates reports, creates incident IDs, stores Public and Field records separately, calculates RF reference information and exposes the results through a REST API.
+The backend validates submissions, creates incident IDs, stores Public and Field reports separately, calculates analytical RF references and exposes data through a REST API.
 
 ## Why I built it
 
-Signal reports can arrive without accurate location, time, station or reception information. They may also be scattered between messages, spreadsheets and manual notes.
+Broadcast teams need reliable information about how a radio signal is received across different locations. Sending personnel to every location can be slow and resource-intensive, while feedback received through calls or messages is difficult to compare and analyse.
 
-I built this project to create a consistent workflow where:
+I built this project to:
 
-- every report follows the same structure;
-- GPS and time are captured with the incident;
-- Public and Field reports remain distinguishable;
-- administrators can review both sources together;
-- RF calculations provide useful engineering context;
-- reports can be exported for spreadsheets and Google Earth;
-- application upgrades do not overwrite operational records.
+- make it easier to collect analytical data about radio-signal reception;
+- receive structured reports directly from radio listeners and fans;
+- reduce the need to send field personnel for every initial signal check;
+- capture location, time, station and reception conditions consistently;
+- support quick, one-handed report submission on a mobile device;
+- combine Public and Field observations for easier analysis and follow-up.
 
 ## How I built it
 
@@ -57,20 +56,18 @@ I built this project to create a consistent workflow where:
 6. I added observation scoring for signal quality, stability and service condition.
 7. I implemented server-generated incident IDs and duplicate-submission protection.
 8. I added Admin maps, filtering, CSV reporting, print output and KML export.
-9. I hosted the frontend on Microsoft IIS and used URL Rewrite with ARR to proxy `/api/*` to Node.
-10. I configured HTTPS and tested the complete browser-to-IIS-to-API request path.
-
-Because another service already used the standard HTTPS port in the deployment environment, the IIS site was exposed through HTTPS port `444`. Node remained bound locally on port `3000`, behind IIS.
+9. I used Microsoft IIS to serve the frontend and URL Rewrite with ARR to proxy `/api/*` to Node.js.
+10. I used HTTPS for the public-facing IIS site while keeping Node.js bound to the local loopback interface.
 
 ## System architecture
 
 ```mermaid
 flowchart TD
-    U["Public users"] --> IIS["Microsoft IIS - HTTPS :444"]
-    F["Field engineers"] --> IIS
+    U["Radio listeners"] --> IIS["Microsoft IIS - HTTPS :443"]
+    F["Field personnel"] --> IIS
     A["Administrators"] --> IIS
-    IIS --> S["Static HTML, CSS and JavaScript"]
-    IIS -->|"/api/* through ARR"| N["Node.js + Express - local :3000"]
+    IIS --> S["Public, Field and Admin web files"]
+    IIS -->|"/api/* through ARR"| N["Node.js + Express - 127.0.0.1:3000"]
     N --> J["JSON runtime stores"]
     N --> R["GPS, RF, scoring and reporting logic"]
 ```
@@ -79,13 +76,13 @@ flowchart TD
 
 ```text
 Browser
-  -> HTTPS request to IIS
+  -> HTTPS request to IIS on port 443
   -> IIS serves the Public, Field, Admin and shared frontend files
   -> /api/* requests are matched by URL Rewrite
-  -> ARR forwards the request to the local Node.js service
-  -> Express validates and processes the request
+  -> ARR forwards API requests to 127.0.0.1:3000
+  -> Express validates and processes each request
   -> JSON runtime stores are read or updated
-  -> The API response returns through IIS to the browser
+  -> The response returns through IIS to the browser
 ```
 
 ## Main features
@@ -99,58 +96,75 @@ Browser
 - Haversine distance calculation
 - RF power normalization and nominal EIRP
 - Terrestrial horizon-limited reception-radius reference
-- Field and combined Admin live maps
+- Field and combined Admin maps
 - Incident filtering, status updates and history
 - CSV, print and Google Earth KML reports
 - Dark mode and responsive navigation
 - Field service worker and offline queue
 - Audit records and runtime health checks
 
-## How to use it
+## How to use each page
 
-### Public / Volunteer reporting
+### Public / Volunteer Logger — `/`
 
-1. Open the Public Logger.
-2. Allow location access when requested.
-3. Select the relevant station and channel.
-4. Choose the observed signal quality, stability and service condition.
-5. Add a short observation if needed.
-6. Submit the report.
+This page is designed for listeners and radio fans submitting a quick reception report.
 
-The server validates the report, adds location and RF context, generates a `PUB` ID and stores it in the Public incident stream.
+1. Open the Public page on a phone or computer.
+2. Read and dismiss the introductory window when it appears.
+3. Allow location access so the report can include the current GPS position.
+4. Enter a name if the optional reporter-name field is enabled.
+5. Select the station.
+6. Select the channel or frequency when applicable.
+7. Choose the observed **Signal Quality**.
+8. Choose the observed **Signal Stability**.
+9. Choose the **Service Condition**.
+10. Add a short comment or observation if necessary.
+11. Review the report summary and submit it.
 
-### Field Engineer reporting
+The server validates the required fields, generates a `PUB` incident ID and stores the report in the Public incident stream.
 
-1. Open the [Field Signal Logger](https://feeds.aforevo.com:444/field/).
-2. Capture or confirm the current GPS position.
-3. Select the station and channel being checked.
-4. Record the reception observations.
-5. Add optional measured technical readings.
-6. Select the incident priority and assignment.
-7. Submit the incident.
+### Field Engineer Logger — `/field/`
 
-The server generates an `INC` ID, performs the reference calculations and saves the incident to the Field stream.
+This page supports more detailed checks by field personnel.
 
-### Administration
+1. Open the Field page and start a new report.
+2. Enter or confirm the engineer/operator name.
+3. Capture the current GPS position and check the reported accuracy.
+4. Select the station and channel being assessed.
+5. Record signal quality, stability and service condition.
+6. Enter any available technical reading or custom field.
+7. Add an observation describing the reception problem or test result.
+8. Select the priority and assignment information where configured.
+9. Review the captured information and submit the incident.
+10. Use recent history, maps or offline controls when those features are enabled.
 
-The Admin Control Center supports:
+The server generates an `INC` incident ID, adds the available distance and RF reference information, and stores the report in the Field incident stream.
 
-- reviewing Public and Field incidents;
-- changing incident status and assignment;
-- managing stations, channels, users and permissions;
-- configuring Public and Field forms;
-- viewing combined incident maps;
-- exporting CSV, printable and KML reports;
-- checking audit activity and system health.
+### Admin Control Center — `/admin/`
 
-The public portfolio does not include a link to the private Admin deployment.
+This page provides the operational and analytical view of the system.
 
-## Run the sanitized edition locally
+- **Dashboard:** review report totals, trends, categories and recent incidents.
+- **Incidents:** search, filter and inspect Public and Field reports.
+- **Status and assignment:** update the progress, priority and ownership of incidents.
+- **Stations and channels:** maintain the options available to reporting pages.
+- **Maps:** compare incident locations with configured station locations.
+- **Exports:** produce filtered CSV, printable and Google Earth KML reports.
+- **Public configuration:** control Public fields, content, choices and presentation.
+- **Field configuration:** control Field sections, custom fields, choices and workflow.
+- **Users and permissions:** maintain administrative roles and access settings.
+- **System health and audit:** review storage checks, activity and configuration events.
 
-Requirements:
+Administrator access must be protected in a real deployment. No production credentials are provided in this repository.
+
+## Run locally
+
+### Requirements
 
 - Node.js 18 or newer
 - npm
+
+### Setup
 
 From the repository root:
 
@@ -178,6 +192,86 @@ Open:
 | Field Logger | `http://localhost:3000/field/` |
 | Admin Control Center | `http://localhost:3000/admin/` |
 | API health check | `http://localhost:3000/api/health` |
+
+## Deploy with Microsoft IIS
+
+The following process uses `https://signal-logger.example.com` as a placeholder. Replace it with a hostname you control and do not commit private deployment values.
+
+### Prerequisites
+
+- Windows Server with Microsoft IIS
+- An HTTPS certificate for the selected hostname
+- IIS URL Rewrite
+- IIS Application Request Routing (ARR)
+- Node.js 18 or newer
+- A method for running Node.js as a persistent Windows service
+- DNS pointing the selected hostname to the server
+
+### 1. Prepare the application
+
+1. Copy the project to an application directory.
+2. Copy `server/config.example.json` to `server/config.json`.
+3. Replace only the example values needed for the deployment.
+4. From the `server` directory, run:
+
+```powershell
+npm ci --omit=dev
+```
+
+5. Start `server/server.js` through a dedicated Windows service account.
+6. Confirm that the API responds locally at `http://127.0.0.1:3000/api/health`.
+
+Node.js is intentionally bound to `127.0.0.1`; port 3000 should not be exposed publicly.
+
+### 2. Prepare IIS
+
+1. Create an IIS site for the application files.
+2. Set `index.html` as the default document.
+3. Install URL Rewrite and ARR.
+4. Enable proxy support in ARR.
+5. adapt `deployment/web.config.example` and place the resulting `web.config` in the IIS site root.
+6. Confirm that requests matching `/api/*` are rewritten to `http://127.0.0.1:3000/api/*`.
+7. Grant the IIS application-pool identity read access to the frontend files.
+8. Grant write access to runtime JSON files only to the account running the Node.js service.
+
+### 3. Configure HTTPS
+
+1. Add an IIS HTTPS binding for the selected hostname.
+2. Use the standard HTTPS port `443`.
+3. Select the correct certificate.
+4. Redirect HTTP requests to HTTPS.
+5. Do not expose the Node.js port through the firewall.
+
+Example routes after deployment:
+
+| Application | Example URL |
+|---|---|
+| Public Logger | `https://signal-logger.example.com/` |
+| Field Logger | `https://signal-logger.example.com/field/` |
+| Admin Control Center | `https://signal-logger.example.com/admin/` |
+| API health check | `https://signal-logger.example.com/api/health` |
+
+### 4. Verify the deployment
+
+- Open all three browser interfaces over HTTPS.
+- Submit a test Public report and confirm that a `PUB` ID is returned.
+- Submit a test Field report and confirm that an `INC` ID is returned.
+- Confirm that both reports appear in the Admin interface.
+- Test GPS permission from a secure HTTPS page.
+- Test filters, maps and required exports.
+- Restart the Node.js service and confirm that stored records remain available.
+- Review browser and IIS logs for failed requests.
+
+### 5. Protect upgrades and operational data
+
+Before updating the application:
+
+1. Back up `config.json`, incident stores, audit records and ID sequences.
+2. Stop the Node.js service.
+3. Deploy only the intended application changes.
+4. Do not replace runtime data with example templates.
+5. Restore the correct file permissions.
+6. Start the service and repeat the health and submission tests.
 
 ## Repository file structure
 
@@ -220,9 +314,9 @@ mbi-signal-logger/
 
 Runtime files such as `config.json`, incident records, audit logs and sequence state are excluded from Git.
 
-## IIS deployment structure
+## IIS deployment file structure
 
-The following is the sanitized equivalent of the IIS file layout used for the project:
+A deployment can retain the following application layout while keeping environment-specific values out of version control:
 
 ```text
 C:\inetpub\wwwroot\signal-logger\
@@ -256,31 +350,16 @@ C:\inetpub\wwwroot\signal-logger\
 | `index.html` | Public / Volunteer Logger |
 | `field/` | Field Engineer application, manifest and service worker |
 | `admin/` | Admin Control Center |
-| `shared/` | Shared interface styling, JavaScript helpers and fonts |
+| `shared/` | Shared styling, JavaScript helpers and fonts |
 | `server/server.js` | Node.js API entry point |
 | `server/config.json` | Active application configuration |
 | `server/incidents.json` | Field incident store |
 | `server/public_incidents.json` | Public incident store |
 | `server/audit.json` | Administrative and API activity |
 | `server/id_sequences.json` | Persistent `INC` and `PUB` counters |
-| `web.config` | IIS default document, rewrite, reverse-proxy and HTTPS rules |
+| `web.config` | IIS default-document, rewrite, reverse-proxy and HTTPS rules |
 
-The repository includes a sanitized [`deployment/web.config.example`](deployment/web.config.example). The live IIS file, certificate material and environment-specific bindings remain private.
-
-## IIS configuration process
-
-The IIS deployment involved:
-
-1. creating the site and selecting its physical path;
-2. installing IIS URL Rewrite and Application Request Routing;
-3. enabling ARR proxy support;
-4. adding a rewrite rule for `/api/*`;
-5. forwarding API requests to `http://localhost:3000/api/*`;
-6. configuring the HTTPS site binding and certificate;
-7. keeping the Node process bound to the local interface;
-8. testing static files, API health, redirects and browser caching.
-
-The generic IIS example in this repository is for study and must be adapted before deployment.
+The IIS configuration must prevent direct web access to the `server` directory and its JSON files. Certificate material and environment-specific bindings must remain outside the repository.
 
 ## Documentation
 
@@ -290,7 +369,7 @@ The generic IIS example in this repository is for study and must be adapted befo
 | [API reference](docs/API.md) | Routes and server responsibilities |
 | [Configuration](docs/CONFIGURATION.md) | Configuration ownership and RF inputs |
 | [Data model](docs/DATA_MODEL.md) | Runtime stores, IDs and persistence |
-| [Deployment](docs/DEPLOYMENT.md) | IIS/ARR and Node deployment workflow |
+| [Deployment](docs/DEPLOYMENT.md) | IIS/ARR and Node.js deployment workflow |
 | [Operations](docs/OPERATIONS.md) | Backup, upgrade, recovery and troubleshooting |
 | [Release history](docs/RELEASE_HISTORY.md) | Main V6.5.x milestones |
 | [Security](SECURITY.md) | Public-release boundaries and reporting guidance |
@@ -309,24 +388,26 @@ Public and Field incidents are stored separately, while combined analysis endpoi
 
 Runtime JSON is treated as operational data rather than deployment content. It is ignored by Git and must be backed up before application updates.
 
-### Local Node binding
+### Local Node.js binding
 
-Node listens on the loopback interface. IIS is the public-facing layer responsible for HTTPS and reverse proxying.
+Node.js listens on the loopback interface. IIS is the public-facing layer responsible for HTTPS and reverse proxying.
 
 ## RF model limitation
 
 RF outputs are analytical references, not guaranteed coverage predictions. The current implementation does not model terrain, buildings, vegetation, interference, feeder loss, diffraction or measured propagation calibration.
 
-## Public-release boundary
+## Repository disclosure
 
-This repository intentionally excludes:
+The published project excludes:
 
-- real staff and reporter identities;
-- live incident, audit and sequence data;
-- real station coordinates and private RF settings;
-- certificate files, passwords, tokens and private keys;
-- internal IP addresses and private server details;
-- the private operational manuals and screenshots.
+- actual deployment URLs and company-specific infrastructure details;
+- production credentials, secrets, certificates and private keys;
+- production incident, audit and sequence data;
+- real reporter and staff information;
+- internal IP addresses, server names and private file paths;
+- private station coordinates and operational RF configuration.
+
+Example values are included only to demonstrate the application's structure and setup process.
 
 ## Skills demonstrated
 
@@ -334,10 +415,10 @@ This repository intentionally excludes:
 - Node.js and Express REST API development
 - GPS and mapping integration
 - RF and Haversine calculations
-- file-backed persistence and validation
+- File-backed persistence and validation
 - Microsoft IIS, URL Rewrite and ARR
 - HTTPS deployment and troubleshooting
-- operational documentation and privacy-aware publishing
+- Operational documentation and privacy-aware publishing
 
 ## Author
 
