@@ -61,29 +61,90 @@ I built this project to:
 
 ## System architecture
 
+The system uses a layered architecture: browser interfaces collect and present information, IIS handles public HTTPS traffic, Node.js processes API requests, and separate JSON stores preserve operational data.
+
 ```mermaid
-flowchart TD
-    U["Radio listeners"] --> IIS["Microsoft IIS - HTTPS :443"]
-    F["Field personnel"] --> IIS
-    A["Administrators"] --> IIS
-    IIS --> S["Public, Field and Admin web files"]
-    IIS -->|"/api/* through ARR"| N["Node.js + Express - 127.0.0.1:3000"]
-    N --> J["JSON runtime stores"]
-    N --> R["GPS, RF, scoring and reporting logic"]
+flowchart TB
+    subgraph Users["Users"]
+        L["Radio listener or fan"]
+        F["Field personnel"]
+        A["Administrator"]
+    end
+
+    subgraph Interfaces["Browser interfaces"]
+        P["Public Logger (/)"]
+        E["Field Logger (/field/)"]
+        C["Admin Center (/admin/)"]
+    end
+
+    subgraph Web["Web and proxy layer"]
+        IIS["Microsoft IIS (HTTPS 443)"]
+        STATIC["Static HTML, CSS and JavaScript"]
+        ARR["URL Rewrite and ARR (/api/*)"]
+    end
+
+    subgraph Application["Application layer"]
+        API["Node.js and Express API (127.0.0.1:3000)"]
+        LOGIC["Validation, IDs, GPS, RF and scoring"]
+    end
+
+    subgraph Data["Data layer"]
+        FIELD["Field incidents"]
+        PUBLIC["Public incidents"]
+        CONFIG["Configuration and users"]
+        AUDIT["Audit and ID sequences"]
+    end
+
+    L --> P
+    F --> E
+    A --> C
+
+    P --> IIS
+    E --> IIS
+    C --> IIS
+
+    IIS --> STATIC
+    IIS --> ARR
+    ARR --> API
+    API --> LOGIC
+
+    LOGIC --> FIELD
+    LOGIC --> PUBLIC
+    LOGIC --> CONFIG
+    LOGIC --> AUDIT
 ```
 
-### Request flow
+### Component map
 
-```text
-Browser
-  -> HTTPS request to IIS on port 443
-  -> IIS serves the Public, Field, Admin and shared frontend files
-  -> /api/* requests are matched by URL Rewrite
-  -> ARR forwards API requests to 127.0.0.1:3000
-  -> Express validates and processes each request
-  -> JSON runtime stores are read or updated
-  -> The response returns through IIS to the browser
+| Layer | Component | Responsibility | Connection |
+|---|---|---|---|
+| Users | Listeners, field personnel and administrators | Submit reports or review operational information | Use the relevant browser interface |
+| Browser interfaces | Public, Field and Admin pages | Collect input, display results and call the API | Send HTTPS requests through IIS |
+| Web and proxy | Microsoft IIS on port 443 | Terminates HTTPS and serves frontend files | Sends `/api/*` requests to ARR |
+| Reverse proxy | URL Rewrite and ARR | Keeps the internal Node.js service behind IIS | Proxies API traffic to `127.0.0.1:3000` |
+| Application | Node.js and Express | Validates requests and coordinates application operations | Invokes incident, GPS, RF and scoring logic |
+| Data | Separate JSON runtime stores | Preserves incidents, configuration, audit events and ID sequences | Read and updated only through the backend |
+
+### Report lifecycle
+
+```mermaid
+flowchart LR
+    INPUT["Listener or field observation"] --> VALIDATE["Validate required fields"]
+    VALIDATE --> IDENTIFY["Generate PUB or INC ID"]
+    IDENTIFY --> ANALYSE["Add GPS, distance, RF and scores"]
+    ANALYSE --> STORE["Write to the correct incident store"]
+    STORE --> REVIEW["Admin review, maps and exports"]
 ```
+
+### Request mapping
+
+| Request | IIS action | Backend or file target |
+|---|---|---|
+| `GET /` | Serves the Public interface | `index.html` |
+| `GET /field/` | Serves the Field interface | `field/index.html` |
+| `GET /admin/` | Serves the Admin interface | `admin/index.html` |
+| `/shared/*` | Serves shared frontend assets | `shared/` |
+| `/api/*` | Rewrites and proxies the request through ARR | `http://127.0.0.1:3000/api/*` |
 
 ## Main features
 
